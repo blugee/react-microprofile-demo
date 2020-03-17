@@ -11,7 +11,7 @@ export class Fetchdata extends Component {
   };
 
   getPosts() {
-    axios("http://192.168.0.101:9080/user")
+    axios("http://localhost:9080/user")
       .then(response => {
         this.setState({
           posts: response.data,
