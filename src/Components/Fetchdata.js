@@ -1,59 +1,63 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Table } from "react-bootstrap";
-
+import ReactTable from 'react-table-6';
 export class Fetchdata extends Component {
   state = {
     posts: {},
     isLoading: true,
     errors: null,
-    loading:"Loading....."
+    loading: "Loading....."
   };
- 
+
   getPosts() {
-    axios("https://jsonplaceholder.typicode.com/posts")
-    .then(response => {
+    axios("http://192.168.0.101:9080/user")
+      .then(response => {
         this.setState({
           posts: response.data,
           isLoading: false
         });
       })
-    .catch(error => this.setState({ error, isLoading: false }));
-      
+      .catch(error => this.setState({ error, isLoading: false }));
+
   }
   componentDidMount() {
     this.getPosts();
   }
   render() {
     const { isLoading, posts } = this.state;
+    const columns = [{
+      Header: 'USerID',
+      accessor: 'id'
+    }, {
+      Header: 'FirstName',
+      accessor: 'firstName'
+    },
+    {
+      Header: 'LastName',
+      accessor: 'lastName'
+    },
+    {
+      Header: 'Gender',
+      accessor: 'gender'
+    },
+    {
+      Header: 'Email',
+      accessor: 'email'
+    }]
+
     return (
       <React.Fragment>
         <h2>Random Post</h2>
-        <Table striped bordered hover responsive>
-            <thead>
-                <tr>
-                    <th>USerID</th>
-                    <th>ID</th>
-                    <th >Title</th>
-                </tr>
-            </thead>
-           <tbody>
-            {!isLoading ? (
-                posts.map(post => {
-                const {userId,id, title} = post;
-                return (
-                    <tr key={id}>
-                        <td>{userId}</td>
-                        <td>{id}</td>
-                        <td>{title}</td>
-                    </tr>
-                );
-                })
-            ) : (
-                <tr>{this.state.loading}</tr>
-            )}
-          </tbody> 
-        </Table>
+        {!isLoading ? (
+          <ReactTable
+            data={posts}
+            columns={columns}
+            defaultPageSize={5}
+            pageSizeOptions={[5, 10, 15]}
+          />) : (
+            <p>{this.state.loading}</p>
+          )}
       </React.Fragment>
     );
   }
