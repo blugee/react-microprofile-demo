@@ -42,10 +42,6 @@ export class Fetchdata extends Component {
       accessor: 'genres'
     },
     {
-      Header: 'Bio',
-      accessor: 'bio'
-    },
-    {
       Header: 'Popularity',
       accessor: 'popularity'
     }]
